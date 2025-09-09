@@ -19,7 +19,7 @@ export default function LoadingScreen({ navigation }: any) {
   const screenWidth = Dimensions.get("window").width;
   const barWidth = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, screenWidth * 0.6], // bar is 60% of screen width
+    outputRange: [0, screenWidth * 0.6], 
   });
 
   return (
@@ -27,7 +27,7 @@ export default function LoadingScreen({ navigation }: any) {
       {/* Logo + Brand Name */}
       <View style={styles.logoContainer}>
         <Image
-          source={require("../../assets/images/logo.png")} // 👈 your G logo image
+          source={require("../../assets/images/logo.png")} 
           style={styles.logoImage}
           resizeMode="contain"
         />
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "80%",
-    height: 450,
+    height: 460,
     marginBottom: 50,
   },
   progressBackground: {
