@@ -11,7 +11,7 @@ export default function LoadingScreen({ navigation }: any) {
       duration: 2000, // 2 seconds
       useNativeDriver: false,
     }).start(() => {
-      navigation.replace("Home");
+      navigation.replace("SignIn"); // navigate to Welcome screen after loading
     });
   }, []);
 
@@ -26,16 +26,20 @@ export default function LoadingScreen({ navigation }: any) {
     <View style={styles.container}>
       {/* Logo + Brand Name */}
       <View style={styles.logoContainer}>
-        <Text style={styles.logoCircle}>G</Text>
+        <Image
+          source={require("../../assets/images/logo.png")} // 👈 your G logo image
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
         <Text style={styles.logoText}>Glidex</Text>
       </View>
 
       {/* Center Image */}
-      {/* <Image
-        source={require("../assets/shopping.png")} // <-- replace with your image path
+      <Image
+        source={require("../../assets/images/shopping.png")}
         style={styles.image}
         resizeMode="contain"
-      /> */}
+      />
 
       {/* Progress Bar */}
       <View style={styles.progressBackground}>
@@ -50,7 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f2e1cf", // light beige like your design
+    backgroundColor: "#f2e1cf",
     paddingHorizontal: 20,
   },
   logoContainer: {
@@ -59,31 +63,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  logoCircle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#000",
-    marginRight: 5,
+  logoImage: {
+    width: 55, // adjust size
+    height: 55,
+    marginRight: 8,
   },
   logoText: {
-    fontSize: 26,
+    fontSize: 40,
     fontWeight: "600",
     color: "#000",
   },
   image: {
-    width: "70%",
-    height: 350,
+    width: "80%",
+    height: 450,
     marginBottom: 50,
   },
   progressBackground: {
     width: "60%",
     height: 10,
     borderRadius: 5,
-    backgroundColor: "#f7e7d8", // light background
+    backgroundColor: "#f7e7d8",
     overflow: "hidden",
   },
   progressFill: {
     height: "100%",
-    backgroundColor: "#000", // black progress fill
+    backgroundColor: "#000",
   },
 });
