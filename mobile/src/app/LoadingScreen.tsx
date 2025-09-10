@@ -8,10 +8,10 @@ export default function LoadingScreen({ navigation }: any) {
     // Animate progress bar
     Animated.timing(progress, {
       toValue: 1,
-      duration: 2000, // 2 seconds
+      duration: 2000, 
       useNativeDriver: false,
     }).start(() => {
-      navigation.replace("SignIn"); // navigate to Welcome screen after loading
+      navigation.replace("Welcome"); 
     });
   }, []);
 
@@ -19,7 +19,7 @@ export default function LoadingScreen({ navigation }: any) {
   const screenWidth = Dimensions.get("window").width;
   const barWidth = progress.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, screenWidth * 0.6], // bar is 60% of screen width
+    outputRange: [0, screenWidth * 0.6], 
   });
 
   return (
@@ -27,7 +27,7 @@ export default function LoadingScreen({ navigation }: any) {
       {/* Logo + Brand Name */}
       <View style={styles.logoContainer}>
         <Image
-          source={require("../../assets/images/logo.png")} // 👈 your G logo image
+          source={require("../../assets/images/logo.png")} 
           style={styles.logoImage}
           resizeMode="contain"
         />
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoImage: {
-    width: 55, // adjust size
+    width: 55, 
     height: 55,
     marginRight: 8,
   },

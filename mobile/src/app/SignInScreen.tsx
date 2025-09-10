@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, Alert, ScrollView } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 export default function SignInScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
@@ -7,83 +9,197 @@ export default function SignInScreen({ navigation }: any) {
 
   const handleSignIn = () => {
     if (email && password) {
-      navigation.replace("Home"); // Navigate to Home after sign-in
+      navigation.replace("Home");
     } else {
-      alert("Please enter email and password");
+      Alert.alert("Error", "Please enter email and password");
     }
   };
 
+  const handleForgotPassword = () => {
+    Alert.alert("Forgot Password tapped!");
+  };
+
+  const handleGoogleSignIn = () => {
+    Alert.alert("Google Sign In tapped!");
+  };
+
+  const handleSignUp = () => {
+    navigation.navigate("SignUp");
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign In</Text>
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Decorative shapes */}
+      <View style={[styles.shape, styles.shapeTopLeft]} />
+      <View style={[styles.shape, styles.shapeBottomRight]} />
+      {/* <View style={[styles.shapeSmall, styles.shapeCenter]} /> */}
 
-      {/* Subtitle */}
-      <Text style={styles.subtitle}>Welcome to the Designer Panel</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>Sign In</Text>
+        <Text style={styles.subtitle}>Welcome to the Designer Panel</Text>
 
-      <TextInput
-        placeholder="Email"
-        style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-      />
+        <TextInput
+          placeholder="Email"
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
 
-      <TextInput
-        placeholder="Password"
-        style={styles.input}
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
+        <TextInput
+          placeholder="Password"
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
 
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
-        <Text style={styles.buttonText}>Sign In</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity onPress={handleForgotPassword}>
+          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+          <Text style={styles.buttonText}>Sign In</Text>
+        </TouchableOpacity>
+
+        <View style={styles.orContainer}>
+          <View style={styles.line} />
+          <Text style={styles.orText}>or sign in with</Text>
+          <View style={styles.line} />
+        </View>
+
+        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
+          <Image
+            source={require("../../assets/images/google.png")}
+            style={styles.googleIcon}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleSignUp}>
+          <Text style={styles.signUpText}>
+            Don’t have an account? <Text style={{ fontWeight: "bold" }}>Sign Up</Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    justifyContent: "center", 
-    alignItems: "center", 
-    paddingTop: 120,  
-    padding: 20, 
-    backgroundColor: "#f2e1cf" 
+  container: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingTop: 60,
+    paddingHorizontal: 20,
+    backgroundColor: "#f2e6db",
+    position: "relative",
   },
-  title: { 
-    fontSize: 64, 
-    fontWeight: "400",
-    fontFamily: "Arial", 
-    marginBottom: 5,   // 👈 much smaller gap
+  content: {
+    width: "100%",
+    maxWidth: 400,
+    zIndex: 1,
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "600",
+    marginBottom: 5,
+    textAlign: "center",
   },
   subtitle: {
-    fontSize: 18,
-    fontWeight: "300",
+    fontSize: 16,
+    fontWeight: "400",
     color: "#333",
-    marginBottom: 40,  // 👈 space before inputs
+    marginBottom: 30,
+    textAlign: "center",
   },
-  input: { 
-    width: "30%", 
-    borderWidth: 1, 
-    borderColor: "#ccc", 
-    padding: 10, 
-    borderRadius: 8, 
-    marginBottom: 20, 
-    backgroundColor: "#fff" 
+  input: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 20,
+    backgroundColor: "#fff",
   },
-  button: { 
-    backgroundColor: "#2955e5ff", 
-    padding: 10, 
-    borderRadius: 8, 
-    width: "30%", 
-    alignItems: "center" 
+  forgotPassword: {
+    color: "#000",
+    fontSize: 14,
+    fontWeight: "500",
+    marginBottom: 20,
+    alignSelf: "flex-end",
   },
-  buttonText: { 
-    color: "#fff", 
-    fontSize: 18, 
-    fontWeight: "600" 
+  button: {
+    backgroundColor: "#000",
+    padding: 12,
+    borderRadius: 8,
+    width: "100%",
+    alignItems: "center",
+    marginBottom: 20,
   },
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  orContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    marginVertical: 20,
+  },
+  line: {
+    flex: 1,
+    height: 1,
+    backgroundColor: "#201e1e",
+  },
+  orText: {
+    marginHorizontal: 10,
+    fontSize: 14,
+    color: "#4b4949",
+  },
+  googleButton: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+  },
+  googleIcon: {
+    width: 40,
+    height: 40,
+  },
+  signUpText: {
+    marginTop: 15,
+    fontSize: 14,
+    color: "#000",
+  },
+  // Shapes
+  shape: {
+    position: "absolute",
+    borderRadius: 200,
+    width: width * 1.2,
+    height: height * 0.6,
+    opacity: 0.6,
+    zIndex: 0,
+  },
+  shapeTopLeft: {
+    top: -height * 0.25,
+    left: -width * 0.3,
+    backgroundColor: "#d7cec5ff",
+    transform: [{ rotate: "25deg" }],
+  },
+  shapeBottomRight: {
+    bottom: -height * 0.25,
+    right: -width * 0.3,
+    backgroundColor: "#e7ceb7ff",
+    transform: [{ rotate: "-20deg" }],
+  },
+  shapeCenter: {
+    top: height * 0.35,
+    right: -50,
+  },
 });
