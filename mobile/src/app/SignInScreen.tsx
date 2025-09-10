@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, Alert, ScrollView } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -11,16 +11,16 @@ export default function SignInScreen({ navigation }: any) {
     if (email && password) {
       navigation.replace("Home");
     } else {
-      alert("Please enter email and password");
+      Alert.alert("Error", "Please enter email and password");
     }
   };
 
   const handleForgotPassword = () => {
-    alert("Forgot Password tapped!");
+    Alert.alert("Forgot Password tapped!");
   };
 
   const handleGoogleSignIn = () => {
-    alert("Google Sign In tapped!");
+    Alert.alert("Google Sign In tapped!");
   };
 
   const handleSignUp = () => {
@@ -28,13 +28,12 @@ export default function SignInScreen({ navigation }: any) {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Decorative shapes behind content */}
+    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+      {/* Decorative shapes */}
       <View style={[styles.shape, styles.shapeTopLeft]} />
       <View style={[styles.shape, styles.shapeBottomRight]} />
-      <View style={[styles.shapeSmall, styles.shapeCenter]} />
+      {/* <View style={[styles.shapeSmall, styles.shapeCenter]} /> */}
 
-      {/* Main content */}
       <View style={styles.content}>
         <Text style={styles.title}>Sign In</Text>
         <Text style={styles.subtitle}>Welcome to the Designer Panel</Text>
@@ -64,14 +63,12 @@ export default function SignInScreen({ navigation }: any) {
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
-        {/* Horizontal line with "or sign in with" */}
         <View style={styles.orContainer}>
           <View style={styles.line} />
           <Text style={styles.orText}>or sign in with</Text>
           <View style={styles.line} />
         </View>
 
-        {/* Google Sign In */}
         <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
           <Image
             source={require("../../assets/images/google.png")}
@@ -80,76 +77,78 @@ export default function SignInScreen({ navigation }: any) {
           />
         </TouchableOpacity>
 
-        {/* Sign Up Text */}
         <TouchableOpacity onPress={handleSignUp}>
           <Text style={styles.signUpText}>
             Don’t have an account? <Text style={{ fontWeight: "bold" }}>Sign Up</Text>
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { 
-    flex: 1, 
-    justifyContent: "flex-start", 
-    alignItems: "center", 
-    paddingTop: 80, 
-    paddingHorizontal: 20, 
+  container: {
+    flexGrow: 1,
+    justifyContent: "flex-start",
+    alignItems: "center",
+    paddingTop: 60,
+    paddingHorizontal: 20,
     backgroundColor: "#f2e6db",
     position: "relative",
   },
   content: {
-    width: "40%",
-    zIndex: 1, // ensures content is above shapes
+    width: "100%",
+    maxWidth: 400,
+    zIndex: 1,
     alignItems: "center",
   },
-  title: { 
-    fontSize: 48, 
-    fontWeight: "400",
-    marginBottom: 5,   
+  title: {
+    fontSize: 32,
+    fontWeight: "600",
+    marginBottom: 5,
+    textAlign: "center",
   },
   subtitle: {
-    fontSize: 18,
-    fontWeight: "300",
+    fontSize: 16,
+    fontWeight: "400",
     color: "#333",
-    marginBottom: 40,  
+    marginBottom: 30,
+    textAlign: "center",
   },
-  input: { 
-    width: "40%", 
-    borderWidth: 1, 
-    borderColor: "#ccc", 
-    padding: 12, 
-    borderRadius: 8, 
-    marginBottom: 20, 
-    backgroundColor: "#fff" 
+  input: {
+    width: "100%",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 20,
+    backgroundColor: "#fff",
   },
   forgotPassword: {
     color: "#000",
     fontSize: 14,
     fontWeight: "500",
-    marginBottom: 30,
+    marginBottom: 20,
     alignSelf: "flex-end",
   },
-  button: { 
-    backgroundColor: "#000", 
-    padding: 12, 
-    borderRadius: 8, 
-    width: "40%", 
+  button: {
+    backgroundColor: "#000",
+    padding: 12,
+    borderRadius: 8,
+    width: "100%",
     alignItems: "center",
     marginBottom: 20,
   },
-  buttonText: { 
-    color: "#fff", 
-    fontSize: 18, 
-    fontWeight: "600" 
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "600",
   },
   orContainer: {
     flexDirection: "row",
     alignItems: "center",
-    width: "40%",
+    width: "100%",
     marginVertical: 20,
   },
   line: {
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
   },
   orText: {
     marginHorizontal: 10,
-    fontSize: 16,
+    fontSize: 14,
     color: "#4b4949",
   },
   googleButton: {
@@ -182,33 +181,25 @@ const styles = StyleSheet.create({
   shape: {
     position: "absolute",
     borderRadius: 200,
-    width: width * 0.9,
-    height: height * 0.5,
+    width: width * 1.2,
+    height: height * 0.6,
     opacity: 0.6,
-    zIndex: 0, // behind content
+    zIndex: 0,
   },
   shapeTopLeft: {
-    top: -height * 0.2,
+    top: -height * 0.25,
     left: -width * 0.3,
     backgroundColor: "#d7cec5ff",
     transform: [{ rotate: "25deg" }],
   },
   shapeBottomRight: {
-    bottom: -height * 0.2,
+    bottom: -height * 0.25,
     right: -width * 0.3,
     backgroundColor: "#e7ceb7ff",
     transform: [{ rotate: "-20deg" }],
   },
-  shapeSmall: {
-    position: "absolute",
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    opacity: 0.5,
-    backgroundColor: "#c1b188ff",
-  },
   shapeCenter: {
-    top: height * 0.3,
-    right: -50,
-  },
+    top: height * 0.35,
+    right: -50,
+  },
 });

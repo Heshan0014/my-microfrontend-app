@@ -2,8 +2,9 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoadingScreen from './src/app/LoadingScreen';
+// import SignInScreen from './src/app/SignInScreen';
 import WelcomeScreen from './src/app/WelcomeScreen';
-import SignInScreen from './src/app/SignInScreen'; // corrected import
+import SignInScreen from './src/app/SignInScreen'; 
 import { View, Text } from "react-native";
 
 const Stack = createNativeStackNavigator();

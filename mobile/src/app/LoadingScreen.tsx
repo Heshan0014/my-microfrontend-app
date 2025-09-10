@@ -8,10 +8,10 @@ export default function LoadingScreen({ navigation }: any) {
     // Animate progress bar
     Animated.timing(progress, {
       toValue: 1,
-      duration: 2000, // 2 seconds
+      duration: 2000, 
       useNativeDriver: false,
     }).start(() => {
-      navigation.replace("Welcome"); // navigate to Welcome screen after loading
+      navigation.replace("Welcome"); 
     });
   }, []);
 
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logoImage: {
-    width: 55, // adjust size
+    width: 55, 
     height: 55,
     marginRight: 8,
   },
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "80%",
-    height: 460,
+    height: 450,
     marginBottom: 50,
   },
   progressBackground: {
