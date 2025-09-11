@@ -1,30 +1,33 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoadingScreen from './src/app/LoadingScreen';
-// import SignInScreen from './src/app/SignInScreen';
-import WelcomeScreen from './src/app/WelcomeScreen';
-import SignInScreen from './src/app/SignInScreen'; 
-import { View, Text } from "react-native";
+import LoadingScreen from "./src/app/LoadingScreen";
+import WelcomeScreen from "./src/app/WelcomeScreen";
+import SignInScreen from "./src/app/SignInScreen";
+import RegisterScreen from "./src/app/RegisterScreen";
 
-const Stack = createNativeStackNavigator();
+// Define all screens and their params
+export type RootStackParamList = {
+  Loading: undefined;
+  Welcome: undefined;
+  SignIn: undefined;
+  Register: undefined;
+};
 
-function HomeScreen() {
-  return (
-    <View style={{ flex:1, justifyContent:"center", alignItems:"center" }}>
-      <Text style={{ fontSize: 20 }}>Welcome to Micro Frontend App 🚀</Text>
-    </View>
-  );
-}
+// Create a typed stack navigator
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName="Loading"
+        screenOptions={{ headerShown: false }}
+      >
         <Stack.Screen name="Loading" component={LoadingScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
