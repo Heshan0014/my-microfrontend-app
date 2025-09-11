@@ -1,34 +1,47 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, Alert, ScrollView } from "react-native";
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Dimensions,
+  Alert,
+  ScrollView,
+} from 'react-native';
 
-const { width, height } = Dimensions.get("window");
+const { width, height } = Dimensions.get('window');
 
 export default function SignInScreen({ navigation }: any) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
     if (email && password) {
-      navigation.replace("Home");
+      navigation.replace('CustomerHome');
     } else {
-      Alert.alert("Error", "Please enter email and password");
+      Alert.alert('Error', 'Please enter email and password');
     }
   };
 
   const handleForgotPassword = () => {
-    Alert.alert("Forgot Password tapped!");
+    Alert.alert('Forgot Password tapped!');
   };
 
   const handleGoogleSignIn = () => {
-    Alert.alert("Google Sign In tapped!");
+    Alert.alert('Google Sign In tapped!');
   };
 
   const handleSignUp = () => {
-    navigation.navigate("SignUp");
+    navigation.navigate('SignUp');
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
       {/* Decorative shapes */}
       <View style={[styles.shape, styles.shapeTopLeft]} />
       <View style={[styles.shape, styles.shapeBottomRight]} />
@@ -36,7 +49,7 @@ export default function SignInScreen({ navigation }: any) {
 
       <View style={styles.content}>
         <Text style={styles.title}>Sign In</Text>
-        <Text style={styles.subtitle}>Welcome to the Designer Panel</Text>
+        <Text style={styles.subtitle}>Welcome to Glidx Fashion App</Text>
 
         <TextInput
           placeholder="Email"
@@ -55,11 +68,17 @@ export default function SignInScreen({ navigation }: any) {
           secureTextEntry
         />
 
-        <TouchableOpacity onPress={handleForgotPassword}>
+        <TouchableOpacity
+          onPress={handleForgotPassword}
+          style={{ width: '100%' }}
+        >
           <Text style={styles.forgotPassword}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate('Home')} // or the screen name you want
+        >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
@@ -69,19 +88,30 @@ export default function SignInScreen({ navigation }: any) {
           <View style={styles.line} />
         </View>
 
-        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
+        <TouchableOpacity
+          style={styles.googleButton}
+          onPress={handleGoogleSignIn}
+        >
           <Image
-            source={require("../../assets/images/google.png")}
+            source={require('../../assets/images/google.png')}
             style={styles.googleIcon}
             resizeMode="contain"
           />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleSignUp}>
-          <Text style={styles.signUpText}>
-            Don’t have an account? <Text style={{ fontWeight: "bold" }}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity>
+        <View style={styles.bottomContainer}>
+          <TouchableOpacity onPress={handleSignUp}>
+            <Text style={styles.signUpText}>
+              Don’t have an account?{' '}
+              <Text
+                style={styles.link}
+                onPress={() => navigation.navigate('Register')}
+              >
+                Sign up
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -90,81 +120,83 @@ export default function SignInScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     paddingTop: 60,
     paddingHorizontal: 20,
-    backgroundColor: "#f2e6db",
-    position: "relative",
+    backgroundColor: '#f2e6db',
+    position: 'relative',
   },
   content: {
-    width: "100%",
+    width: '100%',
     maxWidth: 400,
     zIndex: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   title: {
     fontSize: 32,
-    fontWeight: "600",
+    fontWeight: '600',
     marginBottom: 5,
-    textAlign: "center",
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    fontWeight: "400",
-    color: "#333",
+    fontWeight: '400',
+    color: '#333',
     marginBottom: 30,
-    textAlign: "center",
+    textAlign: 'center',
   },
   input: {
-    width: "100%",
+    width: '100%',
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     padding: 12,
     borderRadius: 8,
     marginBottom: 20,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   forgotPassword: {
-    color: "#000",
+    color: '#000',
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: '500',
     marginBottom: 20,
-    alignSelf: "flex-end",
+    marginTop: -10,
+    textAlign: 'right',
   },
+
   button: {
-    backgroundColor: "#000",
+    backgroundColor: '#000',
     padding: 12,
     borderRadius: 8,
-    width: "100%",
-    alignItems: "center",
+    width: '100%',
+    alignItems: 'center',
     marginBottom: 20,
   },
   buttonText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: '600',
   },
   orContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    width: "100%",
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
     marginVertical: 20,
   },
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: "#201e1e",
+    backgroundColor: '#201e1e',
   },
   orText: {
     marginHorizontal: 10,
     fontSize: 14,
-    color: "#4b4949",
+    color: '#4b4949',
   },
   googleButton: {
     marginTop: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 8,
     padding: 10,
   },
@@ -172,14 +204,25 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
   },
+  bottomContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
   signUpText: {
     marginTop: 15,
     fontSize: 14,
-    color: "#000",
+    color: '#000',
+  },
+  link: {
+    color: '#000',
+    fontWeight: '600',
+    textDecorationLine: 'underline',
   },
   // Shapes
   shape: {
-    position: "absolute",
+    position: 'absolute',
     borderRadius: 200,
     width: width * 1.2,
     height: height * 0.6,
@@ -189,17 +232,17 @@ const styles = StyleSheet.create({
   shapeTopLeft: {
     top: -height * 0.25,
     left: -width * 0.3,
-    backgroundColor: "#d7cec5ff",
-    transform: [{ rotate: "25deg" }],
+    backgroundColor: '#d7cec5ff',
+    transform: [{ rotate: '25deg' }],
   },
   shapeBottomRight: {
     bottom: -height * 0.25,
     right: -width * 0.3,
-    backgroundColor: "#e7ceb7ff",
-    transform: [{ rotate: "-20deg" }],
+    backgroundColor: '#e7ceb7ff',
+    transform: [{ rotate: '-20deg' }],
   },
   shapeCenter: {
     top: height * 0.35,
-    right: -50,
-  },
+    right: -50,
+  },
 });
