@@ -16,7 +16,7 @@ export type RootStackParamList = {
   SignIn: undefined;
   Register: undefined;
   LocationPreference: undefined;
-   ManualLocation: undefined;
+  
  
 };
 
