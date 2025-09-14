@@ -12,16 +12,12 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { RootStackParamList } from './App'; // 👈 import global type
 
 const { width, height } = Dimensions.get('window');
 
-type RootStackParamList = {
-  Login: undefined;
-  Register: undefined;
-  SignIn: undefined;
-};
-
-type Props = NativeStackScreenProps<RootStackParamList, 'Register'>;
+// ✅ Fix: Use "RegisterScreen" not "Register"
+type Props = NativeStackScreenProps<RootStackParamList, 'RegisterScreen'>;
 
 export default function RegisterScreen({ navigation }: Props) {
   const [name, setName] = useState('');
@@ -60,7 +56,7 @@ export default function RegisterScreen({ navigation }: Props) {
         console.log('Customer registered:', { name, email });
 
         Alert.alert('Registration Successful', 'You are now registered!');
-        navigation.navigate('SignIn');
+        navigation.navigate('SignInScreen');
       }
 
       // Reset form
@@ -182,7 +178,7 @@ export default function RegisterScreen({ navigation }: Props) {
             Already have an account?{' '}
             <Text
               style={styles.link}
-              onPress={() => navigation.navigate('SignIn')}
+              onPress={() => navigation.navigate('SignInScreen')}
             >
               Sign In
             </Text>
