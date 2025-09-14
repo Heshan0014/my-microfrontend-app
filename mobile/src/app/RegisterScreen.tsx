@@ -12,11 +12,9 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-<<<<<<< HEAD
-import { RootStackParamList } from './App'; // 👈 import global type
-=======
+
 import { RootStackParamList } from '../../App'; // 👈 import global type
->>>>>>> induwara
+
 
 const { width, height } = Dimensions.get('window');
 

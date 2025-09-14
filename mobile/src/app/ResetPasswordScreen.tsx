@@ -1,59 +1,93 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
-  Dimensions,
   Alert,
-  ScrollView,
-} from 'react-native';
+  Dimensions,
+} from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App"; // 👈 import your RootStackParamList
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
-export default function SignInScreen({ navigation }: any) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+// Props type from navigation
+type Props = NativeStackScreenProps<RootStackParamList, "ResetPasswordScreen">;
 
-  const handleSignIn = () => {
-    if (email && password) {
-      navigation.replace('CustomerHome');
-    } else {
-      Alert.alert('Error', 'Please enter email and password');
+export default function ResetPasswordScreen({ navigation }: Props) {
+  const [email, setEmail] = useState("");
+
+  const handleReset = async () => {
+    if (!email) {
+      Alert.alert("Error", "Please enter your email.");
+      return;
+    }
+
+    // Step 1: Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      Alert.alert("Error", "Please enter a valid email address.");
+      return;
+    }
+
+    try {
+      // Step 2: Call backend to check if email exists in Firebase
+      const response = await fetch(
+        "http://172.20.10.4:8080/api/auth/reset-password?email=" + email,
+        { method: "POST" }
+      );
+
+      // If backend returned HTML (e.g. error page), prevent JSON parse crash
+      const text = await response.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Invalid response from server");
+      }
+
+      if (data.status === "success") {
+        // Show 4-digit code
+        Alert.alert("Your 4-digit code", data.code, [
+          {
+            text: "Enter Code",
+            onPress: () =>
+              navigation.navigate("EnterCodeScreen", {
+                email,
+                code: data.code,
+              }),
+          },
+        ]);
+      } else {
+        Alert.alert("Error", "This email is not registered.");
+      }
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Something went wrong. Please try again.");
     }
   };
 
-  const handleForgotPassword = () => {
-  navigation.navigate('ResetPasswordScreen');
-};
-
-
-  const handleGoogleSignIn = () => {
-    Alert.alert('Google Sign In tapped!');
-  };
-
-  const handleSignUp = () => {
-    navigation.navigate('SignUp');
-  };
-
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
-      {/* Decorative shapes */}
-      <View style={[styles.shape, styles.shapeTopLeft]} />
-      <View style={[styles.shape, styles.shapeBottomRight]} />
-      {/* <View style={[styles.shapeSmall, styles.shapeCenter]} /> */}
+    <View style={styles.container}>
+      <Text
+        style={styles.backArrow}
+        onPress={() => navigation.goBack()} // 👈 back navigation
+      >
+        ←
+      </Text>
 
       <View style={styles.content}>
-        <Text style={styles.title}>Sign In</Text>
-        <Text style={styles.subtitle}>Welcome to Glidx Fashion App</Text>
+        <Text style={styles.title}>Reset password</Text>
+        <Text style={styles.subtitle}>
+          Enter the email associated with your account and we’ll send an email
+          with instructions to reset your password.
+        </Text>
 
+        <Text style={styles.label}>Email address</Text>
         <TextInput
-          placeholder="Email"
+          placeholder="example@gmail.com"
           style={styles.input}
           value={email}
           onChangeText={setEmail}
@@ -61,189 +95,68 @@ export default function SignInScreen({ navigation }: any) {
           autoCapitalize="none"
         />
 
-        <TextInput
-          placeholder="Password"
-          style={styles.input}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-
-        <TouchableOpacity
-          onPress={handleForgotPassword}
-          style={{ width: '100%' }}
-        >
-          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <TouchableOpacity style={styles.button} onPress={handleReset}>
+          <Text style={styles.buttonText}>Send Instructions</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')} // or the screen name you want
-        >
-          <Text style={styles.buttonText}>Sign In</Text>
-        </TouchableOpacity>
-
-        <View style={styles.orContainer}>
-          <View style={styles.line} />
-          <Text style={styles.orText}>or sign in with</Text>
-          <View style={styles.line} />
-        </View>
-
-        <TouchableOpacity
-          style={styles.googleButton}
-          onPress={handleGoogleSignIn}
-        >
-          <Image
-            source={require('../../assets/images/google.png')}
-            style={styles.googleIcon}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity onPress={handleSignUp}>
-            <Text style={styles.signUpText}>
-              Don’t have an account?{' '}
-              <Text
-                style={styles.link}
-                onPress={() => navigation.navigate('RegisterScreen')}
-              >
-                Sign up
-              </Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
       </View>
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingTop: 60,
-    paddingHorizontal: 20,
-    backgroundColor: '#f2e6db',
-    position: 'relative',
+    flex: 1,
+    backgroundColor: "#f8ecd9",
+    padding: 20,
+    paddingTop: 40,
+  },
+  backArrow: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#000",
+    marginBottom: 30,
   },
   content: {
-    width: '100%',
-    maxWidth: 400,
-    zIndex: 1,
-    alignItems: 'center',
+    flex: 1,
   },
   title: {
-    fontSize: 32,
-    fontWeight: '600',
-    marginBottom: 5,
-    textAlign: 'center',
+    fontSize: 26,
+    fontWeight: "700",
+    color: "#000",
+    marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
-    fontWeight: '400',
-    color: '#333',
+    fontSize: 14,
+    color: "#444",
     marginBottom: 30,
-    textAlign: 'center',
+    lineHeight: 20,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#000",
+    marginBottom: 8,
   },
   input: {
-    width: '100%',
+    width: "100%",
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     padding: 12,
-    borderRadius: 8,
-    marginBottom: 20,
-    backgroundColor: '#fff',
+    borderRadius: 6,
+    backgroundColor: "#fff",
+    marginBottom: 25,
   },
-  forgotPassword: {
-    color: '#000',
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 20,
-    marginTop: -10,
-    textAlign: 'right',
-  },
-
   button: {
-    backgroundColor: '#000',
-    padding: 12,
+    backgroundColor: "#000",
+    paddingVertical: 15,
     borderRadius: 8,
-    width: '100%',
-    alignItems: 'center',
-    marginBottom: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  orContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginVertical: 20,
-  },
-  line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: '#201e1e',
-  },
-  orText: {
-    marginHorizontal: 10,
-    fontSize: 14,
-    color: '#4b4949',
-  },
-  googleButton: {
-    marginTop: 10,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 10,
-  },
-  googleIcon: {
-    width: 40,
-    height: 40,
-  },
-  bottomContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  signUpText: {
-    marginTop: 15,
-    fontSize: 14,
-    color: '#000',
-  },
-  link: {
-    color: '#000',
-    fontWeight: '600',
-    textDecorationLine: 'underline',
-  },
-  // Shapes
-  shape: {
-    position: 'absolute',
-    borderRadius: 200,
-    width: width * 1.2,
-    height: height * 0.6,
-    opacity: 0.6,
-    zIndex: 0,
-  },
-  shapeTopLeft: {
-    top: -height * 0.25,
-    left: -width * 0.3,
-    backgroundColor: '#d7cec5ff',
-    transform: [{ rotate: '25deg' }],
-  },
-  shapeBottomRight: {
-    bottom: -height * 0.25,
-    right: -width * 0.3,
-    backgroundColor: '#e7ceb7ff',
-    transform: [{ rotate: '-20deg' }],
-  },
-  shapeCenter: {
-    top: height * 0.35,
-    right: -50,
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });

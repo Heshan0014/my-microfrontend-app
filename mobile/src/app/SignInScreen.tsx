@@ -26,8 +26,9 @@ export default function SignInScreen({ navigation }: any) {
   };
 
   const handleForgotPassword = () => {
-    Alert.alert('Forgot Password tapped!');
-  };
+  navigation.navigate('ResetPasswordScreen');
+};
+
 
   const handleGoogleSignIn = () => {
     Alert.alert('Google Sign In tapped!');
@@ -105,7 +106,7 @@ export default function SignInScreen({ navigation }: any) {
               Don’t have an account?{' '}
               <Text
                 style={styles.link}
-                onPress={() => navigation.navigate('Register')}
+                onPress={() => navigation.navigate('RegisterScreen')}
               >
                 Sign up
               </Text>
