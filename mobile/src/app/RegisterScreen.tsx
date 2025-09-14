@@ -12,9 +12,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-
 import { RootStackParamList } from '../../App'; // 👈 import global type
-
 
 const { width, height } = Dimensions.get('window');
 
