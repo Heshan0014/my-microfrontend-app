@@ -8,7 +8,14 @@ import {
   Dimensions,
 } from 'react-native';
 
-export default function LoadingScreen({ navigation }: any) {
+interface LoadingScreenProps {
+  navigation: {
+    navigate: (route: string) => void;
+    replace: (route: string) => void;
+  };
+}
+
+export default function LoadingScreen({ navigation }: LoadingScreenProps) {
   const [progress] = useState(new Animated.Value(0));
 
   useEffect(() => {
@@ -20,7 +27,7 @@ export default function LoadingScreen({ navigation }: any) {
     }).start(() => {
       navigation.replace('Welcome');
     });
-  }, []);
+  }, [navigation, progress]);
 
   // Interpolate progress width
   const screenWidth = Dimensions.get('window').width;

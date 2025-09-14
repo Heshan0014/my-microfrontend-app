@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   View,
   Text,
@@ -16,12 +17,45 @@ const { width, height } = Dimensions.get('window');
 export default function SignInScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = () => {
-    if (email && password) {
-      navigation.replace('CustomerHome');
-    } else {
-      Alert.alert('Error', 'Please enter email and password');
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await axios.post(
+  'http://localhost:8081/api/auth/login', // use localhost instead of 10.0.2.2
+  { email, password }
+);
+
+
+      const { token, role, message } = response.data;
+
+      Alert.alert('Success', message || 'Login successful');
+
+      // TODO: store token for persistence
+      // await AsyncStorage.setItem('authToken', token);
+
+      if (role === 'Customer') {
+        navigation.replace('Customerhome');
+      } else if (role === 'Designer') {
+        navigation.replace('Designerhome'); // or approval/pending page
+      } else {
+        navigation.replace('Welcome');
+      }
+    } catch (error: any) {
+      console.log(error.response?.data || error.message);
+      Alert.alert(
+        'Login Failed',
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -34,7 +68,7 @@ export default function SignInScreen({ navigation }: any) {
   };
 
   const handleSignUp = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('Register');
   };
 
   return (
@@ -45,7 +79,6 @@ export default function SignInScreen({ navigation }: any) {
       {/* Decorative shapes */}
       <View style={[styles.shape, styles.shapeTopLeft]} />
       <View style={[styles.shape, styles.shapeBottomRight]} />
-      {/* <View style={[styles.shapeSmall, styles.shapeCenter]} /> */}
 
       <View style={styles.content}>
         <Text style={styles.title}>Sign In</Text>
@@ -75,10 +108,7 @@ export default function SignInScreen({ navigation }: any) {
           <Text style={styles.forgotPassword}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')} // or the screen name you want
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
@@ -103,12 +133,7 @@ export default function SignInScreen({ navigation }: any) {
           <TouchableOpacity onPress={handleSignUp}>
             <Text style={styles.signUpText}>
               Don’t have an account?{' '}
-              <Text
-                style={styles.link}
-                onPress={() => navigation.navigate('Register')}
-              >
-                Sign up
-              </Text>
+              <Text style={styles.link}>Sign up</Text>
             </Text>
           </TouchableOpacity>
         </View>
@@ -163,7 +188,6 @@ const styles = StyleSheet.create({
     marginTop: -10,
     textAlign: 'right',
   },
-
   button: {
     backgroundColor: '#000',
     padding: 12,
@@ -220,7 +244,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textDecorationLine: 'underline',
   },
-  // Shapes
   shape: {
     position: 'absolute',
     borderRadius: 200,
@@ -240,9 +263,5 @@ const styles = StyleSheet.create({
     right: -width * 0.3,
     backgroundColor: '#e7ceb7ff',
     transform: [{ rotate: '-20deg' }],
-  },
-  shapeCenter: {
-    top: height * 0.35,
-    right: -50,
   },
 });
