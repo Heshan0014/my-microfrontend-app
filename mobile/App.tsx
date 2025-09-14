@@ -5,6 +5,7 @@ import LoadingScreen from "./src/app/LoadingScreen";
 import WelcomeScreen from "./src/app/WelcomeScreen";
 import SignInScreen from "./src/app/SignInScreen";
 import RegisterScreen from "./src/app/RegisterScreen";
+import AdminVerificationScreen from "./src/app/AdminVerificationScreen";
 
 // Define all screens and their params
 export type RootStackParamList = {
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   Welcome: undefined;
   SignIn: undefined;
   Register: undefined;
+  AdminVerification: undefined;
 };
 
 // Create a typed stack navigator
@@ -28,6 +30,10 @@ export default function App() {
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="SignIn" component={SignInScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen
+          name="AdminVerification"
+          component={AdminVerificationScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

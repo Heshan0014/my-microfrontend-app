@@ -18,10 +18,17 @@ export default function SignInScreen({ navigation }: any) {
   const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
-    if (email && password) {
-      navigation.replace('CustomerHome');
-    } else {
+    if (!email || !password) {
       Alert.alert('Error', 'Please enter email and password');
+      return;
+    }
+
+    if (email === 'admin@gmail.com' && password === '123456') {
+      // Navigate to AdminVerificationScreen
+      navigation.replace('AdminVerification');
+    } else {
+      // Navigate to regular customer home
+      navigation.replace('CustomerHome');
     }
   };
 
@@ -45,7 +52,6 @@ export default function SignInScreen({ navigation }: any) {
       {/* Decorative shapes */}
       <View style={[styles.shape, styles.shapeTopLeft]} />
       <View style={[styles.shape, styles.shapeBottomRight]} />
-      {/* <View style={[styles.shapeSmall, styles.shapeCenter]} /> */}
 
       <View style={styles.content}>
         <Text style={styles.title}>Sign In</Text>
@@ -75,10 +81,7 @@ export default function SignInScreen({ navigation }: any) {
           <Text style={styles.forgotPassword}>Forgot Password?</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')} // or the screen name you want
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
 
@@ -163,7 +166,6 @@ const styles = StyleSheet.create({
     marginTop: -10,
     textAlign: 'right',
   },
-
   button: {
     backgroundColor: '#000',
     padding: 12,
@@ -240,9 +242,5 @@ const styles = StyleSheet.create({
     right: -width * 0.3,
     backgroundColor: '#e7ceb7ff',
     transform: [{ rotate: '-20deg' }],
-  },
-  shapeCenter: {
-    top: height * 0.35,
-    right: -50,
   },
 });
