@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import {
   View,
   Text,
@@ -16,12 +17,46 @@ const { width, height } = Dimensions.get('window');
 export default function SignInScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSignIn = () => {
-    if (email && password) {
-      navigation.replace('CustomerHome');
-    } else {
-      Alert.alert('Error', 'Please enter email and password');
+  const handleSignIn = async () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter both email and password');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // 🔑 Call backend login API
+      const response = await axios.post('http://10.0.2.2:8080/api/auth/login', {
+        email,
+        password,
+      });
+
+      const { token, role, message } = response.data;
+
+      Alert.alert('Success', message || 'Login successful');
+
+      // TODO: store token in AsyncStorage or SecureStore for persistence
+      // await AsyncStorage.setItem('authToken', token);
+
+      // Navigate based on role
+      if (role === 'Customer') {
+        navigation.replace('Welcome');
+      } else if (role === 'Designer') {
+        navigation.replace('SignUp'); // or approval/pending page
+      } else {
+        navigation.replace('Loading');
+      }
+    } catch (error: any) {
+      console.log(error.response?.data || error.message);
+      Alert.alert(
+        'Login Failed',
+        error.response?.data?.message || error.message
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,7 +112,7 @@ export default function SignInScreen({ navigation }: any) {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Home')} // or the screen name you want
+          onPress={handleSignIn} // or the screen name you want
         >
           <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
