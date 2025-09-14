@@ -7,6 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "@my-microfrontend-app/mobile",
     "userInterfaceStyle": "automatic",
+
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
