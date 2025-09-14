@@ -426,7 +426,7 @@ export default function RegisterScreen({ navigation }: Props) {
             };
 
       const response = await axios.post(
-        'http://10.0.2.2:8080/api/auth/register',
+        'http://localhost:8080/api/auth/register',
         payload
       );
 
