@@ -14,31 +14,35 @@ const { width, height } = Dimensions.get("window");
 export default function WelcomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      {/* Background with gradient + abstract shapes */}
+      {/* Background gradient */}
       <LinearGradient
-        colors={["#fdf7f2", "#f2e6db"]}
+        colors={["#fdf7f2", "#f7eadd", "#f2e0d0"]}
         style={StyleSheet.absoluteFillObject}
       />
 
-      {/* Abstract shapes */}
-      <View style={[styles.shape, styles.shapeTopLeft]} />
-      <View style={[styles.shape, styles.shapeBottomRight]} />
+      {/* Abstract background shapes */}
+      <View style={[styles.wave, styles.waveTop]} />
+      <View style={[styles.wave, styles.waveMiddle]} />
+      <View style={[styles.wave, styles.waveBottom]} />
 
       {/* Logo & Brand */}
-      <View style={styles.header}>
-        <Text style={styles.logo}>G</Text>
-        <Text style={styles.brand}>Glidex</Text>
+      <View style={styles.logoContainer}>
+        <Image
+          source={require("../../assets/images/logo.png")}
+          style={styles.logoImage}
+          resizeMode="contain"
+        />
+        <Text style={styles.logoText}>Glidex</Text>
       </View>
 
-      {/* Image layout like uploaded design */}
+      {/* Image layout */}
       <View style={styles.imageWrapper}>
-        {/* Left side single image */}
+        {/* Left image */}
         <Image
           source={require("../../assets/images/model1.png")}
           style={styles.leftImage}
         />
-
-        {/* Right side stacked images */}
+        {/* Right stacked images */}
         <View style={styles.rightImageColumn}>
           <Image
             source={require("../../assets/images/model2.png")}
@@ -59,21 +63,22 @@ export default function WelcomeScreen({ navigation }: any) {
       {/* Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.replace("Home")}
+        onPress={() => navigation.replace("RegisterScreen")} 
       >
         <Text style={styles.buttonText}>Let’s Get Started</Text>
       </TouchableOpacity>
 
-      {/* Sign in link */}
+      {/* Sign in */}
       <Text style={styles.footerText}>
-        Already have an account?{" "}
-        <Text
-          style={styles.signIn}
-          onPress={() => navigation.navigate("SignIn")}
-        >
-          Sign in
-        </Text>
-      </Text>
+  Already have an account?{" "}
+  <Text
+    style={styles.signIn}
+    onPress={() => navigation.navigate("SignInScreen")} // 👈 update here
+  >
+    Sign in
+  </Text>
+</Text>
+
     </View>
   );
 }
@@ -84,22 +89,48 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#fdf7f2",
   },
-  header: {
+
+  // Waves
+  wave: {
+    position: "absolute",
+    width: width * 1.5,
+    height: height * 0.7,
+    borderRadius: width,
+    opacity: 0.35,
+  },
+  waveTop: {
+    backgroundColor: "#fbe6d7",
+    top: -height * 0.4,
+    left: -width * 0.3,
+    transform: [{ rotate: "25deg" }],
+  },
+  waveMiddle: {
+    backgroundColor: "#f3d9c3",
+    top: height * 0.1,
+    right: -width * 0.4,
+    transform: [{ rotate: "-15deg" }],
+  },
+  waveBottom: {
+    backgroundColor: "#edd1b8",
+    bottom: -height * 0.35,
+    left: -width * 0.2,
+    transform: [{ rotate: "20deg" }],
+  },
+
+  logoContainer: {
+    position: "absolute",
+    top: 80,
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 30,
   },
-  logo: {
-    fontSize: 40,
-    fontWeight: "bold",
-    fontStyle: "italic",
-    color: "#000",
+  logoImage: {
+    width: 55,
+    height: 55,
     marginRight: 8,
   },
-  brand: {
-    fontSize: 32,
+  logoText: {
+    fontSize: 40,
     fontWeight: "600",
     color: "#000",
   },
@@ -155,26 +186,5 @@ const styles = StyleSheet.create({
   signIn: {
     color: "#007bff",
     fontWeight: "600",
-  },
-
-  // Abstract shapes
-  shape: {
-    position: "absolute",
-    backgroundColor: "#e8d5c5",
-    opacity: 0.6,
-    borderRadius: 200,
-    width: width * 0.9,
-    height: height * 0.5,
-    transform: [{ rotate: "25deg" }],
-  },
-  shapeTopLeft: {
-    top: -height * 0.2,
-    left: -width * 0.3,
-  },
-  shapeBottomRight: {
-    bottom: -height * 0.2,
-    right: -width * 0.3,
-    backgroundColor: "#f1e1d3",
-    transform: [{ rotate: "-20deg" }],
   },
 });
